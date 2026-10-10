@@ -38,7 +38,10 @@ runSmokeTests    % optional: headless checks of the numerical core
 main             % opens the app
 ```
 First start generates `data/traffic_data.mat` (12,000 records, seed 2026).
-To preview the interface without MATLAB, open `app/web/index.html` in a browser: a JavaScript copy of the engine answers and the badge reads **Demo engine**.
+To preview the interface without MATLAB, run `python tools/serve_web.py` and open `http://localhost:8000`. The browser uses a JavaScript copy of the engine and the badge reads **Demo engine**.
+
+## Deploy the browser demo to Render
+The repository-root `render.yaml` Blueprint publishes `SmartCommute/app/web` as a static site; no build step or MATLAB installation is needed for the browser demo. Push the repository to GitHub, then in Render choose **New + → Blueprint**, connect the repository, and deploy the `smartcommute` static site. The deployed page runs the JavaScript demo engine; MATLAB analysis and PDF reports are available only when running the MATLAB app locally.
 
 ## What the map shows
 - **Base maps**: Road, Satellite, Terrain, Hybrid.

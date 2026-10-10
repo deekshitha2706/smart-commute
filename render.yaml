@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: smartcommute
+    runtime: static
+    buildCommand: echo "No build step required"
+    staticPublishPath: SmartCommute/app/web
