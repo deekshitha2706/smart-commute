@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%2300d1ff%27/%3E%3Cpath d=%27M6 20c4-10 8 4 12-4s6-2 8-4%27 stroke=%27white%27 stroke-width=%273%27 fill=%27none%27 stroke-linecap=%27round%27/%3E%3C/svg%3E">
+<title>SmartCommute</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="lib/leaflet/leaflet.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/hyd.css">
+</head>
+<body>
+
+<!-- ============ icon sprite ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.4"/></symbol>
+    <symbol id="i-swap" viewBox="0 0 24 24"><path d="M7 4v14M3.5 14.5 7 18l3.5-3.5M17 20V6M13.5 9.5 17 6l3.5 3.5"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c.8-3.6 3.7-5.6 7.5-5.6s6.7 2 7.5 5.6"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-traffic" viewBox="0 0 24 24"><path d="M4 18c3-9 5-9 8-3s5 3 8-9"/><circle cx="4" cy="18" r="1.2"/><circle cx="20" cy="6" r="1.2"/></symbol>
+    <symbol id="i-zone" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" stroke-dasharray="3 3"/><circle cx="12" cy="12" r="3.5"/></symbol>
+    <symbol id="i-risk" viewBox="0 0 24 24"><path d="M12 3 2.8 19.2a1 1 0 0 0 .9 1.5h16.6a1 1 0 0 0 .9-1.5z"/><path d="M12 10v4.5M12 17.3v.1"/></symbol>
+    <symbol id="i-heat" viewBox="0 0 24 24"><path d="M12 3c1 3.5 5.5 5.5 5.5 10.2A5.5 5.5 0 0 1 12 19a5.5 5.5 0 0 1-5.5-5.8c0-2 1-3.2 2-4.4.4 1.2 1 2 1.9 2.4C10.2 8 10.4 5.5 12 3z"/></symbol>
+    <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 18a4.5 4.5 0 0 1-.6-8.96A6 6 0 0 1 18 9.5a4 4 0 0 1-.5 8.5z"/></symbol>
+    <symbol id="i-car" viewBox="0 0 24 24"><path d="M5 16V11l2-5h10l2 5v5M3.5 16h17v3h-3v-1.5h-11V19h-3zM7 12.5h.1M17 12.5h.1"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M8 3v4M16 3v4M3.5 10h17"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 5v14l12-7z"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5zM3 13l9 5 9-5"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11 12 4l8 7v8.5a.5.5 0 0 1-.5.5H15v-6H9v6H4.5a.5.5 0 0 1-.5-.5z"/></symbol>
+    <symbol id="i-work" viewBox="0 0 24 24"><rect x="3.5" y="7.5" width="17" height="12" rx="2.5"/><path d="M9 7.5V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1.5M3.5 13h17"/></symbol>
+  </defs>
+</svg>
+
+<!-- ============ map ============ -->
+<div id="map" aria-label="Route intelligence map"></div>
+<canvas id="fx"></canvas>
+<div id="vignette"></div>
+<div id="pickBanner" class="glass hidden"><svg class="ic"><use href="#i-target"/></svg><span id="pickText">Click the map to set the start</span><button id="pickCancel" class="btn-text">Cancel</button></div>
+
+<!-- ============ top bar ============ -->
+<header id="topbar" class="glass">
+  <div class="brand">
+    <svg class="logo" viewBox="0 0 40 40" aria-hidden="true">
+      <defs><linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22e3ff"/><stop offset="1" stop-color="#7c5cff"/></linearGradient></defs>
+      <rect x="1.5" y="1.5" width="37" height="37" rx="11" fill="url(#lg1)"/>
+      <path d="M9 27c5-1 6-9 11-9s5 7 11 3" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="9" cy="27" r="2.6" fill="#fff"/><circle cx="31" cy="21" r="2.6" fill="#fff" opacity=".85"/>
+    </svg>
+    <div class="brand-text"><b>SmartCommute</b><span>Travel-time risk intelligence</span></div>
+  </div>
+
+  <div class="search" id="searchWrap">
+    <svg class="ic"><use href="#i-search"/></svg>
+    <input id="search" type="text" placeholder="Search a place, area or address" autocomplete="off" spellcheck="false">
+    <div class="suggest" id="sugSearch"></div>
+  </div>
+
+  <div class="top-actions">
+    <span id="engineBadge" class="badge" title="Which engine answers the analysis">…</span>
+    <button class="icon-btn" id="btnTheme" title="Toggle light / dark"><svg class="ic"><use href="#i-sun" id="themeUse"/></svg></button>
+    <button class="icon-btn" id="btnSettings" title="Settings"><svg class="ic"><use href="#i-gear"/></svg></button>
+    <button class="icon-btn avatar" id="btnProfile" title="Profile &amp; saved places"><svg class="ic"><use href="#i-user"/></svg></button>
+  </div>
+</header>
+
+<!-- ============ planner ============ -->
+<aside id="planner" class="glass">
+  <h2>Plan your trip</h2>
+  <div class="route-fields">
+    <div class="timeline"><span class="tl-dot a"></span><span class="tl-line"></span><span class="tl-dot b"></span></div>
+    <div class="fields">
+      <div class="field" id="fFrom">
+        <input id="inFrom" type="text" placeholder="From — start location" autocomplete="off" spellcheck="false">
+        <button class="mini" data-pick="from" title="Pick on map"><svg class="ic"><use href="#i-pin"/></svg></button>
+        <div class="suggest" id="sugFrom"></div>
+      </div>
+      <div class="field" id="fTo">
+        <input id="inTo" type="text" placeholder="To — destination" autocomplete="off" spellcheck="false">
+        <button class="mini" data-pick="to" title="Pick on map"><svg class="ic"><use href="#i-pin"/></svg></button>
+        <div class="suggest" id="sugTo"></div>
+      </div>
+    </div>
+    <button id="btnSwap" class="swap" title="Swap start and destination"><svg class="ic"><use href="#i-swap"/></svg></button>
+  </div>
+
+  <div class="row2">
+    <label class="field plain"><svg class="ic"><use href="#i-cal"/></svg><input id="inDate" type="date"></label>
+    <label class="field plain"><svg class="ic"><use href="#i-clock"/></svg><input id="inTime" type="time" step="300"></label>
+  </div>
+
+  <button id="btnAnalyze" class="cta"><span class="cta-label">Analyze route</span><svg class="ic"><use href="#i-arrow"/></svg><i class="shine"></i></button>
+</aside>
+
+<!-- ============ result card ============ -->
+<section id="result" class="glass hidden" aria-live="polite">
+  <div class="rc-head">
+    <div class="rc-route">
+      <div class="rc-title" id="rcTitle">—</div>
+      <div class="rc-meta" id="rcMeta"></div>
+    </div>
+    <button class="icon-btn sm" id="rcClose" title="Hide results"><svg class="ic"><use href="#i-x"/></svg></button>
+  </div>
+  <div id="stale" class="stale hidden">Inputs changed — press <b>Analyze route</b> to update</div>
+
+  <div class="rc-scroll">
+    <div class="hero">
+      <div class="hero-main">
+        <div class="eyebrow">Expected travel time</div>
+        <div class="big"><span id="vMean">—</span><small id="vMeanUnit">min</small></div>
+        <div class="sub" id="vSub">—</div>
+      </div>
+      <div class="gauge-wrap">
+        <canvas id="gauge"></canvas>
+        <div class="gauge-label" id="gaugeLabel">—</div>
+      </div>
+    </div>
+
+    <div class="late">
+      <div class="late-top">
+        <div><div class="eyebrow">Probability of being late</div><div class="late-val" id="vLate">—</div></div>
+        <div class="budget">
+          <span class="eyebrow">Time budget</span>
+          <div class="stepper"><button id="budMinus" title="Less time"><svg class="ic"><use href="#i-minus"/></svg></button><b id="vBudget">—</b><button id="budPlus" title="More time"><svg class="ic"><use href="#i-plus"/></svg></button></div>
+        </div>
+      </div>
+      <div class="meter"><i id="lateFill"></i></div>
+      <div class="late-note" id="lateNote"></div>
+    </div>
+
+    <nav class="tabs" id="tabs">
+      <button class="tab active" data-tab="overview">Overview</button>
+      <button class="tab" data-tab="uncertainty">Uncertainty</button>
+      <button class="tab" data-tab="leave">Leave time</button>
+      <button class="tab" data-tab="why">Why</button>
+      <i class="tab-ink" id="tabInk"></i>
+    </nav>
+
+    <div class="pane active" id="pane-overview">
+      <div class="tiles">
+        <div class="tile"><div class="t-lab">Variability</div><div class="t-val" id="tVar">—</div><div class="t-sub" id="tVarS"></div></div>
+        <div class="tile"><div class="t-lab">Delay probability</div><div class="t-val" id="tDelay">—</div><div class="t-sub">chance of &gt; 10 min over free-flow</div></div>
+        <div class="tile"><div class="t-lab">Confidence interval</div><div class="t-val" id="tCI">—</div><div class="t-sub" id="tCIS"></div></div>
+        <div class="tile"><div class="t-lab">Congestion risk</div><div class="t-val"><span class="pill" id="tCong">—</span></div><div class="t-sub" id="tCongS"></div></div>
+        <div class="tile"><div class="t-lab">Weather risk</div><div class="t-val"><span class="pill" id="tWx">—</span></div><div class="t-sub" id="tWxS"></div></div>
+        <div class="tile reco" id="tileReco">
+          <div class="t-lab">Recommended departure</div>
+          <div class="t-val big-t" id="tReco">—</div>
+          <div class="t-sub" id="tRecoS"></div>
+        </div>
+      </div>
+      <div class="delay-bars" id="delayBars"></div>
+    </div>
+
+    <div class="pane" id="pane-uncertainty">
+      <div class="chart-head"><span>Where could this trip land?</span><button class="btn-text" id="btnReplay"><svg class="ic"><use href="#i-play"/></svg>Replay simulation</button></div>
+      <canvas id="cDist" class="chart" height="214"></canvas>
+      <div class="legend">
+        <span><i class="lg bar"></i>simulated journeys</span><span><i class="lg line"></i>fitted law</span><span><i class="lg band"></i>95% of trips</span><span><i class="lg lt"></i>late zone — drag the handle</span>
+      </div>
+      <div class="chart-head"><span>Chance of taking longer than t</span></div>
+      <canvas id="cExceed" class="chart" height="132"></canvas>
+    </div>
+
+    <div class="pane" id="pane-leave">
+      <div class="reco-banner" id="recoBanner"></div>
+      <div class="chart-head"><span>Late probability by departure time</span></div>
+      <canvas id="cLeave" class="chart" height="214"></canvas>
+      <div class="leave-chips" id="leaveChips"></div>
+    </div>
+
+    <div class="pane" id="pane-why">
+      <div class="chart-head"><span>What drives the risk</span></div>
+      <div class="drivers" id="drivers"></div>
+      <div class="chart-head"><span>Typical trip time across the day</span></div>
+      <canvas id="cProfile" class="chart" height="140"></canvas>
+      <div class="chart-head"><span>Monte Carlo convergence</span></div>
+      <canvas id="cConv" class="chart" height="86"></canvas>
+      <div class="evidence" id="evidence"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ layer dock + map styles ============ -->
+<button id="rcOpen" class="glass hidden" title="Show results"><svg class="ic"><use href="#i-risk"/></svg><span>Results</span></button>
+
+<nav id="dock" class="glass" aria-label="Map layers">
+  <button class="dk on" data-layer="traffic" title="Road colours show MODELLED congestion from historical statistics — not live traffic"><svg class="ic"><use href="#i-traffic"/></svg><span>Traffic</span></button>
+  <button class="dk on" data-layer="zones"><svg class="ic"><use href="#i-zone"/></svg><span>Congestion</span></button>
+  <button class="dk" data-layer="risk"><svg class="ic"><use href="#i-risk"/></svg><span>Risk</span></button>
+  <button class="dk" data-layer="heat"><svg class="ic"><use href="#i-heat"/></svg><span>Heatmap</span></button>
+  <button class="dk on" data-layer="weather"><svg class="ic"><use href="#i-cloud"/></svg><span>Weather</span></button>
+  <button class="dk on" data-layer="live" title="Animated vehicle and traffic-flow dots along the route (illustration of the modelled congestion, not a live feed)"><svg class="ic"><use href="#i-car"/></svg><span>Route flow</span></button>
+</nav>
+
+<div id="styles" class="glass">
+  <button class="st on" data-style="road"><i class="sw sw-road"></i>Road</button>
+  <button class="st" data-style="satellite"><i class="sw sw-sat"></i>Satellite</button>
+  <button class="st" data-style="terrain"><i class="sw sw-ter"></i>Terrain</button>
+  <button class="st" data-style="hybrid"><i class="sw sw-hyb"></i>Hybrid</button>
+</div>
+
+<div id="zoomctl" class="glass">
+  <button id="zIn" title="Zoom in"><svg class="ic"><use href="#i-plus"/></svg></button>
+  <button id="zOut" title="Zoom out"><svg class="ic"><use href="#i-minus"/></svg></button>
+  <button id="zFit" title="Fit route"><svg class="ic"><use href="#i-target"/></svg></button>
+</div>
+
+<!-- ============ loader ============ -->
+<div id="loader" class="glass hidden">
+  <div class="spinner"><i></i><i></i><i></i></div>
+  <div class="ld-text"><b id="ldTitle">Analyzing</b><span id="ldSub"></span></div>
+  <div class="ld-bar"><i id="ldFill"></i></div>
+</div>
+
+<!-- ============ popovers ============ -->
+<div id="popSettings" class="glass popover hidden">
+  <h3>Settings</h3>
+  <div class="set"><label>Simulated journeys</label>
+    <div class="seg" data-set="n"><button data-v="1000">1k</button><button data-v="5000">5k</button><button data-v="10000" class="on">10k</button><button data-v="25000">25k</button><button data-v="50000">50k</button></div></div>
+  <div class="set"><label>Accepted risk of being late</label>
+    <div class="seg" data-set="tol"><button data-v="0.05">5%</button><button data-v="0.1" class="on">10%</button><button data-v="0.2">20%</button></div></div>
+  <div class="set"><label>Weather what-if</label>
+    <div class="seg" data-set="wx"><button data-v="Auto" class="on">Auto</button><button data-v="Clear">Clear</button><button data-v="Cloudy">Cloudy</button><button data-v="Rain">Rain</button><button data-v="Fog">Fog</button></div></div>
+  <div class="set"><label>PDF reports <small id="repHint"></small></label>
+    <div class="seg reports"><button data-report="risk">Traffic risk</button><button data-report="stats">Statistics</button><button data-report="sim">Simulation</button><button data-report="departure">Departure</button></div></div>
+  <div class="set-foot" id="setFoot"></div>
+</div>
+
+<div id="popProfile" class="glass popover hidden">
+  <div class="prof-head"><div class="avatar big"><svg class="ic"><use href="#i-user"/></svg></div><div><b>Commuter</b><span>Saved places</span></div></div>
+  <div class="saved" id="savedList"></div>
+</div>
+
+<div id="ctxMenu" class="glass hidden"><button data-ctx="from">Route from here</button><button data-ctx="to">Route to here</button></div>
+<div id="toast" class="toast hidden"></div>
+
+<script src="lib/leaflet/leaflet.js"></script>
+<script src="js/services.js"></script>
+<script src="js/demo.js"></script>
+<script src="js/charts.js"></script>
+<!-- Hyderabad enhancement layer (add-on): data + engines first, they hook into map.js / app.js through SC.hyd, SC.hydTiles, SC.hook -->
+<script src="js/hyd/config.js"></script>
+<script src="js/hyd/seed.js"></script>
+<script src="data/hyderabad_osm.js"></script>
+<script src="js/hyd/db.js"></script>
+<script src="js/hyd/search.js"></script>
+<script src="js/hyd/tiles.js"></script>
+<script src="js/map.js"></script>
+<script src="js/app.js"></script>
+<script src="js/hyd/layers.js"></script>
+<script src="js/hyd/location.js"></script>
+<script src="js/hyd/saved.js"></script>
+<script src="js/hyd/transit.js"></script>
+<script src="js/hyd/reroute.js"></script>
+<script src="js/hyd/ui.js"></script>
+</body>
+</html>

@@ -1,0 +1,185 @@
+/* SmartCommute / Hyderabad enhancement layer — styles. Loaded AFTER css/style.css; only adds new selectors. */
+
+/* ---------- map labels (js/hyd/layers.js) ---------- */
+.hl { position: absolute; transform: translate(-10px, -50%); display: flex; align-items: center; gap: 5px; white-space: nowrap; pointer-events: auto; cursor: pointer; font-family: var(--font); }
+.hl-ic { display: grid; place-items: center; min-width: 18px; height: 18px; padding: 0 3px; border-radius: 6px; background: var(--c, #8fa3d1); color: #fff; font-size: 10px; font-weight: 800; line-height: 1; box-shadow: 0 1px 4px rgba(0,0,0,.45), 0 0 0 1.5px rgba(255,255,255,.85); }
+.hl-t { font-size: 11px; font-weight: 600; color: #e9efff; text-shadow: 0 0 3px #060a16, 0 0 3px #060a16, 0 0 6px #060a16; letter-spacing: .01em; }
+:root[data-theme="light"] .hl-t { color: #14213f; text-shadow: 0 0 3px #fff, 0 0 3px #fff, 0 0 5px #fff; }
+body[data-map-style="satellite"] .hl-t, body[data-map-style="hybrid"] .hl-t { color: #fff; text-shadow: 0 0 3px #000, 0 0 3px #000, 0 0 6px #000; }
+.hl-locality { transform: translate(-50%, -50%); }
+.hl-locality .hl-t { font-size: 11.5px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; opacity: .92; }
+.hl-icon .hl-ic { min-width: 16px; height: 16px; font-size: 9px; }
+.hl:hover .hl-t { color: var(--accent); }
+.hl:hover { z-index: 10; }
+
+/* place card (Leaflet popup) */
+.hyd-pop .leaflet-popup-content-wrapper { background: var(--glass-strong); color: var(--text); backdrop-filter: blur(22px) saturate(160%); border: 1px solid var(--stroke2); border-radius: 16px; box-shadow: var(--shadow); padding: 0; }
+.hyd-pop .leaflet-popup-content { margin: 0; width: 290px !important; }
+.hyd-pop .leaflet-popup-tip { background: var(--glass-strong); border: 1px solid var(--stroke2); }
+.hyd-pop a.leaflet-popup-close-button { color: var(--muted); top: 8px; right: 8px; }
+.pc { padding: 14px 14px 12px; }
+.pc-h { display: flex; gap: 10px; align-items: center; padding-right: 18px; }
+.pc-ic { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 11px; color: #fff; font-weight: 800; font-size: 13px; }
+.pc-h b { display: block; font-size: 14px; line-height: 1.25; } .pc-h span { display: block; font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+.pc-reach { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 6px; margin-top: 12px; }
+.pc-reach > div { background: var(--field); border-radius: 11px; padding: 8px 9px; }
+.pc-reach small { display: block; font-size: 10px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; line-height: 1.2; }
+.pc-reach b { display: block; font-size: 15px; margin-top: 3px; }
+.pc-note { font-size: 11px; color: var(--muted); margin-top: 8px; line-height: 1.4; }
+.pc-act { display: flex; gap: 6px; margin-top: 11px; }
+.pc-act button { flex: 1; font-size: 11.5px; font-weight: 700; padding: 8px 6px; border-radius: 10px; background: var(--field-h); color: var(--accent); }
+.pc-act button:hover { background: var(--accent); color: #04121c; }
+
+/* search result icons */
+.sg-ico { flex: none; display: grid; place-items: center; width: 22px; height: 22px; border-radius: 7px; color: #fff; font-size: 10.5px; font-weight: 800; }
+
+/* ---------- user location marker ---------- */
+.hyd-me { position: absolute; width: 0; height: 0; }
+.hyd-me .dot { position: absolute; left: -9px; top: -9px; width: 18px; height: 18px; border-radius: 50%; background: #3b82f6; border: 3px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,.5); }
+.hyd-me .ring { position: absolute; left: -9px; top: -9px; width: 18px; height: 18px; border-radius: 50%; background: rgba(59,130,246,.45); animation: hydPulse 2s ease-out infinite; }
+.hyd-me .cone { display: none; position: absolute; left: -26px; top: -26px; width: 52px; height: 52px; transform: rotate(var(--h, 0deg)); background: conic-gradient(from -25deg at 50% 50%, rgba(59,130,246,.55) 0deg, rgba(59,130,246,0) 50deg, transparent 50deg); border-radius: 50%; -webkit-mask: radial-gradient(circle, transparent 10px, #000 11px); mask: radial-gradient(circle, transparent 10px, #000 11px); }
+.hyd-me.has-heading .cone { display: block; }
+@keyframes hydPulse { 0% { transform: scale(1); opacity: .9; } 100% { transform: scale(3.4); opacity: 0; } }
+.hyd-acc { pointer-events: none; }
+
+/* ---------- toolbar above the zoom buttons ---------- */
+#hydTools { position: fixed; z-index: 1000; right: 14px; bottom: 154px; display: flex; flex-direction: column; padding: 4px; border-radius: 16px; animation: riseIn .7s .4s cubic-bezier(.2,.8,.2,1) both; }
+body.has-result #hydTools { right: 436px; }
+#hydTools button { position: relative; width: 38px; height: 36px; display: grid; place-items: center; color: var(--muted); border-radius: 11px; }
+#hydTools button:hover { background: var(--field-h); color: var(--text); }
+#hydTools button.on { color: #04121c; background: #3b82f6; }
+#hydTools button.on.follow { background: var(--accent); }
+#hydTools button.busy::after { content: ''; position: absolute; right: 5px; top: 5px; width: 7px; height: 7px; border-radius: 50%; background: var(--yellow); animation: hydBlink 1s infinite; }
+#hydTools svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+@keyframes hydBlink { 50% { opacity: .2; } }
+
+/* base-map provider chip */
+.tile-status { position: fixed; z-index: 1000; left: 14px; bottom: 76px; display: flex; align-items: center; gap: 7px; padding: 5px 11px; border-radius: 99px; font-size: 11px; color: var(--muted); background: var(--glass); backdrop-filter: blur(14px); border: 1px solid var(--stroke); max-width: 440px; white-space: nowrap; overflow: hidden; }
+.tile-status i { width: 7px; height: 7px; border-radius: 50%; background: var(--green); flex: none; }
+.tile-status b { color: var(--text); font-weight: 700; } .tile-status span { overflow: hidden; text-overflow: ellipsis; }
+.tile-status.bad i { background: var(--red); } .tile-status.bad { border-color: rgba(240,69,76,.5); }
+
+/* ---------- live status / route strip ---------- */
+#hydLive { position: fixed; z-index: 1000; top: 84px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 10px; padding: 7px 8px 7px 14px; border-radius: 99px; font-size: 12px; animation: hydFade .25s ease both; }
+#hydLive .lv-dot { width: 9px; height: 9px; border-radius: 50%; background: #3b82f6; box-shadow: 0 0 0 0 rgba(59,130,246,.7); animation: hydRing 1.8s infinite; flex: none; }
+#hydLive.paused .lv-dot { background: var(--faint); animation: none; } #hydLive.busy .lv-dot { background: var(--yellow); }
+@keyframes hydRing { 0% { box-shadow: 0 0 0 0 rgba(59,130,246,.6); } 100% { box-shadow: 0 0 0 10px rgba(59,130,246,0); } }
+#hydLive b { font-weight: 700; } #hydLive span { color: var(--muted); }
+#hydLive button { font-size: 11px; font-weight: 700; padding: 5px 10px; border-radius: 99px; background: var(--field-h); color: var(--accent); }
+#hydLive button:hover { background: var(--accent); color: #04121c; }
+
+#hydRoute { position: fixed; z-index: 999; bottom: 88px; left: calc(50% - 39px); transform: translateX(-50%); display: flex; padding: 6px 4px; border-radius: 18px; max-width: calc(100vw - 880px); animation: hydFade .3s ease both; }
+#hydRoute .rs { padding: 3px 10px; border-right: 1px solid var(--stroke); } #hydRoute .rs:last-child { border: 0; }
+#hydRoute small { display: block; font-size: 9.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 700; white-space: nowrap; }
+#hydRoute b { display: block; font-size: 14.5px; margin-top: 2px; white-space: nowrap; }
+#hydRoute em { font-style: normal; font-size: 10.5px; color: var(--muted); white-space: nowrap; }
+#hydRoute .lv-low { color: var(--green); } #hydRoute .lv-med { color: var(--yellow); } #hydRoute .lv-high { color: #ff7a45; } #hydRoute .lv-sev { color: var(--red); }
+body:has(#hydRoute:not(.hidden)) .toast { bottom: 170px; }
+@media (max-width: 1400px) { #hydRoute { display: none !important; } }
+
+/* ---------- planner additions ---------- */
+#hydUseMe { color: #3b82f6; }
+#hydUseMe:hover { background: #3b82f6; color: #fff; }
+#hydChips { display: flex; flex-wrap: wrap; gap: 6px; margin: 2px 0 12px; }
+.sp-chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px 5px 8px; border-radius: 99px; background: var(--field); font-size: 12px; font-weight: 600; color: var(--text); position: relative; transition: background .15s, transform .15s; }
+.sp-chip:hover { background: var(--field-h); transform: translateY(-1px); }
+.sp-chip svg { width: 15px; height: 15px; fill: none; stroke: var(--accent); stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.sp-chip.empty { color: var(--faint); border: 1px dashed var(--stroke2); background: transparent; } .sp-chip.empty svg { stroke: var(--faint); }
+.sp-chip .sp-a { display: none; margin-left: 2px; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 6px; background: var(--field-h); color: var(--accent); }
+.sp-chip:hover .sp-a { display: inline-block; } .sp-chip .sp-a:hover { background: var(--accent); color: #04121c; }
+.sp-add { padding: 5px 9px; } .sp-add svg { stroke: var(--muted); }
+
+/* ---------- popovers: labels & nearby & saved dialog ---------- */
+.hyd-pane { position: fixed; z-index: 1001; width: 330px; padding: 14px; border-radius: 20px; animation: pop .2s ease both; }
+.hyd-pane h3 { margin: 0 0 10px; font-size: 15px; display: flex; align-items: center; justify-content: space-between; }
+.hyd-pane h3 button { font-size: 12px; color: var(--muted); }
+#hydLabels { right: 62px; bottom: 154px; } body.has-result #hydLabels { right: 484px; }
+#hydNearby { right: 62px; bottom: 154px; width: 350px; max-height: 70vh; display: flex; flex-direction: column; } body.has-result #hydNearby { right: 484px; }
+.hyd-tog { display: flex; align-items: center; gap: 10px; padding: 8px 4px; font-size: 13px; cursor: pointer; }
+.hyd-tog input { accent-color: var(--accent); width: 16px; height: 16px; }
+.hyd-tog i { width: 14px; height: 14px; border-radius: 5px; flex: none; }
+.hyd-db { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--stroke); font-size: 11.5px; color: var(--muted); line-height: 1.45; }
+.hyd-db button { margin-top: 8px; font-size: 12px; font-weight: 700; padding: 8px 12px; border-radius: 10px; background: var(--field-h); color: var(--accent); width: 100%; }
+.hyd-db button:hover { background: var(--accent); color: #04121c; }
+.hyd-db .bar { height: 4px; border-radius: 4px; background: var(--field-h); margin-top: 8px; overflow: hidden; } .hyd-db .bar i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .3s; }
+
+.nb-tabs { display: flex; gap: 4px; padding: 3px; background: var(--field); border-radius: 12px; margin-bottom: 10px; }
+.nb-tabs button { flex: 1; padding: 7px; border-radius: 9px; font-size: 12px; font-weight: 700; color: var(--muted); } .nb-tabs button.on { background: var(--field-h); color: var(--text); box-shadow: inset 0 0 0 1.5px var(--accent); }
+.nb-from { font-size: 11.5px; color: var(--muted); margin-bottom: 8px; }
+.nb-list { overflow: auto; display: flex; flex-direction: column; gap: 6px; padding-right: 2px; }
+.nb { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 13px; background: var(--field); cursor: pointer; text-align: left; width: 100%; }
+.nb:hover { background: var(--field-h); }
+.nb .nb-i { flex: none; width: 30px; height: 30px; border-radius: 10px; display: grid; place-items: center; color: #fff; font-weight: 800; font-size: 12px; }
+.nb .nb-t { flex: 1; min-width: 0; } .nb .nb-t b { display: block; font-size: 12.5px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .nb .nb-t span { font-size: 11px; color: var(--muted); }
+.nb .nb-d { text-align: right; flex: none; } .nb .nb-d b { display: block; font-size: 13px; } .nb .nb-d span { font-size: 11px; color: var(--muted); }
+.nb-empty { padding: 14px 6px; color: var(--muted); font-size: 12.5px; line-height: 1.5; }
+.nb-ring { pointer-events: none; }
+
+#hydDialog { position: fixed; inset: 0; z-index: 3000; display: grid; place-items: center; background: rgba(3,6,18,.55); backdrop-filter: blur(4px); }
+#hydDialog .dlg { width: 420px; max-width: calc(100vw - 28px); padding: 20px; border-radius: 22px; animation: pop .2s ease both; }
+.dlg h3 { margin: 0 0 4px; font-size: 17px; } .dlg p { margin: 0 0 14px; color: var(--muted); font-size: 12.5px; }
+.dlg label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 12px 0 6px; }
+.dlg .kinds { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.dlg .kinds button { padding: 9px 2px; border-radius: 11px; background: var(--field); font-size: 11.5px; font-weight: 700; color: var(--muted); display: grid; gap: 4px; justify-items: center; } .dlg .kinds svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.dlg .kinds button.on { background: var(--field-h); color: var(--text); box-shadow: inset 0 0 0 1.5px var(--accent); }
+.dlg input[type=text] { width: 100%; height: 40px; border-radius: 12px; border: 1px solid var(--stroke); background: var(--field); padding: 0 12px; font-size: 13.5px; outline: none; } .dlg input[type=text]:focus { border-color: var(--accent); }
+.dlg .fld { position: relative; }
+.dlg .quick { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; } .dlg .quick button { font-size: 11.5px; font-weight: 700; padding: 6px 10px; border-radius: 99px; background: var(--field-h); color: var(--accent); } .dlg .quick button:hover { background: var(--accent); color: #04121c; }
+.dlg .picked { margin-top: 8px; font-size: 12px; color: var(--green); min-height: 16px; }
+.dlg .foot { display: flex; justify-content: space-between; gap: 8px; margin-top: 18px; } .dlg .foot .l { display: flex; gap: 8px; }
+.dlg .foot button { padding: 10px 16px; border-radius: 12px; font-weight: 700; font-size: 13px; background: var(--field-h); }
+.dlg .foot button.pri { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #04121c; } .dlg .foot button.del { color: var(--red); } .dlg .foot button:disabled { opacity: .45; cursor: default; }
+.dlg .suggest { top: calc(100% + 4px); }
+.sv-list { margin-top: 14px; display: grid; gap: 6px; }
+
+#ctxMenu button + button { margin-top: 2px; }
+
+@keyframes hydFade { from { opacity: 0; } to { opacity: 1; } }
+
+/* ---------- position that is NOT a GPS fix (simulated drive / placed by the user) ---------- */
+.hyd-me.not-gps .dot { background: #f5a524; border-style: dashed; }
+.hyd-me.not-gps .ring { background: rgba(245,165,36,.35); animation: none; opacity: .5; }
+#hydLive.not-gps { border-color: rgba(245,165,36,.6); }
+#hydLive.not-gps .lv-dot { background: #f5a524; }
+.tile-status.bad { cursor: pointer; }
+
+/* ---------- alternative routes panel (js/hyd/reroute.js) ---------- */
+#hydAlt { position: fixed; z-index: 900; left: 14px; top: 470px; width: 346px; display: flex; flex-direction: column; border-radius: 18px; padding: 10px 10px 8px; overflow: hidden; animation: riseIn .5s cubic-bezier(.2,.8,.2,1) both; }
+#hydAlt.hidden { display: none; }
+#hydAlt .al-h { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+#hydAlt .al-h b { font-size: 13px; letter-spacing: .02em; }
+#hydAlt .al-h button { margin-left: auto; width: 24px; height: 24px; border-radius: 8px; border: 1px solid var(--stroke); background: transparent; color: var(--muted); cursor: pointer; }
+#hydAlt .al-body { overflow-y: auto; min-height: 0; }
+#hydAlt.min .al-body { display: none; }
+.al-src { font-size: 10px; font-weight: 800; letter-spacing: .08em; padding: 3px 8px; border-radius: 99px; border: 1px solid var(--stroke); cursor: help; }
+.al-src.ok { color: #4ff0a5; border-color: rgba(79,240,165,.5); background: rgba(34,211,127,.12); }
+.al-src.info { color: #7fb8ff; border-color: rgba(127,184,255,.5); background: rgba(59,130,246,.12); }
+.al-src.warn { color: #f5c04a; border-color: rgba(245,192,74,.5); background: rgba(245,165,36,.10); }
+.al-src.err { color: #ff7b82; border-color: rgba(240,69,76,.5); background: rgba(240,69,76,.10); }
+.al-alert { font-size: 12px; line-height: 1.4; padding: 8px 10px; border-radius: 12px; margin-bottom: 8px; border: 1px solid var(--stroke); }
+.al-alert.err { background: rgba(240,69,76,.12); border-color: rgba(240,69,76,.45); }
+.al-alert.warn { background: rgba(245,165,36,.10); border-color: rgba(245,165,36,.4); }
+.al-alert button, .al-card button, .al-keyform button, .al-key button { font: inherit; font-size: 11px; font-weight: 700; cursor: pointer; color: var(--text); background: var(--glass-strong); border: 1px solid var(--stroke2); border-radius: 9px; padding: 4px 9px; }
+.al-alert button { margin-left: 4px; background: linear-gradient(135deg,#22e3ff,#5b8cff); color: #04101f; border: 0; }
+.al-card { display: flex; align-items: center; gap: 9px; padding: 8px; margin-bottom: 6px; border-radius: 13px; border: 1px solid var(--stroke); background: rgba(255,255,255,.03); cursor: pointer; transition: border-color .2s, transform .2s, background .2s; }
+.al-card:hover { transform: translateY(-1px); border-color: var(--stroke2); background: rgba(255,255,255,.06); }
+.al-card.on { border-color: rgba(34,227,255,.7); background: rgba(34,227,255,.07); cursor: default; }
+.al-l { flex: none; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 12px; color: #04101f; background: var(--c); }
+.al-m { flex: 1; min-width: 0; font-size: 12px; line-height: 1.5; color: var(--muted); }
+.al-m b { font-size: 15px; color: var(--text); margin-right: 5px; }
+.al-t { font-style: normal; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; margin-right: 2px; }
+.al-t.ok { color: #4ff0a5; }
+.al-sub { display: block; font-size: 11px; color: var(--muted); }
+.al-wait { font-size: 11px; color: var(--muted); font-style: italic; }
+.al-on { font-size: 10px; font-weight: 800; letter-spacing: .08em; color: #22e3ff; }
+.al-d { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; font-size: 11px; color: var(--muted); }
+.al-d b { font-size: 13px; } .al-d b.good { color: #4ff0a5; } .al-d b.bad { color: #ff7b82; }
+.al-note, .al-msg { font-size: 11px; line-height: 1.4; color: var(--muted); margin: 4px 2px; }
+.al-msg.err { color: #ff7b82; } .al-msg.ok { color: #4ff0a5; }
+.al-f { border-top: 1px solid var(--stroke); margin-top: 6px; padding-top: 6px; }
+.al-keyform { display: none; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+#hydAlt.keyopen .al-keyform { display: flex; }
+.al-keyform input { flex: 1; min-width: 0; padding: 6px 9px; border-radius: 9px; border: 1px solid var(--stroke2); background: rgba(0,0,0,.25); color: var(--text); font: inherit; font-size: 12px; }
+.al-keyform .al-msg { flex-basis: 100%; }
+.hyd-tip { background: var(--glass-strong); color: var(--text); border: 1px solid var(--stroke2); border-radius: 8px; font-size: 11px; box-shadow: var(--shadow); }
+@media (max-width: 1180px) { #hydAlt { display: none !important; } }
