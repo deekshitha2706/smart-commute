@@ -8,7 +8,7 @@ SmartCommute is a map-first traffic intelligence app. Pick a start and a destina
 
 It is **not** a turn-by-turn navigator. It models travel-time *uncertainty* using probability distributions, regression, confidence intervals and Monte Carlo simulation, and it shows live traffic only when a real traffic provider supplies it.
 
-**Live demo:**(https://smart-commute-ntqn.onrender.com) *(replace with your Render URL)*
+**Live demo:**(https://smart-commute-ntqn.onrender.com)
 
 ---
 
